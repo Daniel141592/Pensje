@@ -1,3 +1,7 @@
+/* Zadanie o19e3pen - Pensje
+ * Autor: Daniel Kobiałka
+ */
+
 #include <iostream>
 #include <vector>
 #include <set>
@@ -10,6 +14,7 @@ struct Employee {
         unknownDescendantsCount(0), onlyChild(0) { }
 };
 
+/* Find out how many descendants with unknown salary each employee has */
 void calculateUnknownDescendants(std::vector<Employee>& employees) {
     for (auto& emp : employees)
         employees[emp.managerId].childrenCount++;
@@ -33,6 +38,7 @@ void calculateUnknownDescendants(std::vector<Employee>& employees) {
     }
 }
 
+/* Fill table with salaries and corresponding employee. If employee is unknown at the moment, set it to 0 */
 void assignKnownSalaries(std::vector<int>& salariesTable, std::vector<Employee>& employees) {
     for (int& sal : salariesTable)
         sal = 0;
@@ -72,11 +78,13 @@ int main() {
             if (freeSalariesCount == 0) {
                 while (!possibleSalaries.empty() && employee->onlyChild > 0) {
                     employee = &employees[employee->onlyChild];
+                    /* should assign highest of possible salaries */
                     employee->salary = *possibleSalaries.rbegin();
                     possibleSalaries.erase(employee->salary);
                 }
                 possibleSalaries.clear();
             }
+            /* if employee is not 'leaf', we should reset possible salaries */
             if (employee->unknownDescendantsCount != 0)
                 possibleSalaries.clear();
         }
